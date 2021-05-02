@@ -6,7 +6,7 @@ This repo contains Terraform config files for deploying a simple t2.micro instan
 
 ```sh
 $ git clone https://github.com/kwong/terraform-ec2-dev-lab.git
-$ cd ec2-dev-lab
+$ cd terraform-ec2-dev-lab
 $ terraform init
 $ terraform plan # optional
 $ terraform apply --auto-approve
