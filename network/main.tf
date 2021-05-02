@@ -4,7 +4,7 @@ data "aws_availability_zones" "available" {}
 
 # VPC
 resource "aws_vpc" "lab_vpc" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   enable_dns_support   = true
 
@@ -19,7 +19,7 @@ resource "aws_vpc" "lab_vpc" {
 
 resource "aws_subnet" "lab_public_subnet" {
   vpc_id                  = aws_vpc.lab_vpc.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = var.public_cidr
   map_public_ip_on_launch = true
   availability_zone       = data.aws_availability_zones.available.names[0]
 
@@ -54,15 +54,20 @@ resource "aws_route" "default_route" {
 
 # Security group
 resource "aws_security_group" "lab_sg" {
-  name        = "allow_ssh"
-  description = "allow ssh"
+  for_each    = var.security_groups
+  name        = each.value.name
+  description = each.value.description
   vpc_id      = aws_vpc.lab_vpc.id
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "ingress" {
+    for_each = each.value.ingress
+    content {
+      from_port   = ingress.value.from
+      to_port     = ingress.value.to
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+    }
+
   }
 
   egress {

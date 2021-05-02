@@ -5,5 +5,5 @@ output "public_subnet" {
 }
 
 output "public_sg" {
-  value = aws_security_group.lab_sg.id
+  value = aws_security_group.lab_sg["public"].id
 }
