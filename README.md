@@ -1,11 +1,11 @@
-# ec2-dev-lab
+# terraform-ec2-dev-lab
 
 This repo contains Terraform config files for deploying a simple t2.micro instance on EC2 which I use mostly for testing random stuff.
 
 ## How to use
 
 ```sh
-$ git clone https://github.com/kwong/ec2-dev-lab.git
+$ git clone https://github.com/kwong/terraform-ec2-dev-lab.git
 $ cd ec2-dev-lab
 $ terraform init
 $ terraform plan # optional
