@@ -1,0 +1,31 @@
+---
+- name: Install Vault
+  hosts: all
+  connection: local
+  become: yes
+  tasks:
+    - name: Install Hashicorp GPG
+      apt_key:
+        url: https://apt.releases.hashicorp.com/gpg
+        state: present
+    
+    - name: Get OS Version
+      shell: lsb_release -cs
+      register: os_version
+
+    - name: Add repo
+      apt_repository:
+        repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ os_version.stdout }} main
+        state: present
+  
+    - name: Update Apt
+      apt:
+        name: "*"
+        state: latest
+    
+    - name: Install apps
+      apt:
+        pkg:
+          - vault
+          - consul
+          - jq

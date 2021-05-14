@@ -30,3 +30,11 @@ resource "aws_instance" "lab" {
     Name = "lab"
   }
 }
+
+resource "null_resource" "ansible" {
+  provisioner "local-exec" {
+    command = "sleep 30; ansible-playbook -i ${aws_instance.lab.public_ip}, -u ubuntu --private-key ${var.private_key_path} ${path.cwd}/provision.yml --ssh-common-args='-o StrictHostKeyChecking=no'"
+  }
+
+  depends_on = [aws_instance.lab,]
+}
