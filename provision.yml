@@ -1,7 +1,6 @@
 ---
 - name: Install Vault
   hosts: all
-  connection: local
   become: yes
   tasks:
     - name: Install Hashicorp GPG
